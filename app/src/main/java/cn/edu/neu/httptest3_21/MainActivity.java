@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textView ;
     private Button bt_register ;
     private Button bt_login ;
-
+    private static String resCode ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,13 +35,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         edit_Account = (EditText)findViewById(R.id.edit_user) ;
         edit_Password = (EditText)findViewById(R.id.edit_pass) ;
         textView = (TextView)findViewById(R.id.text_view) ;
-        textView.setText("你好吗");
+        textView.setText("Test");
         bt_register = (Button)findViewById(R.id.button_register) ;
         bt_register.setOnClickListener(this);
         bt_login = (Button)findViewById(R.id.button_login) ;
         bt_login.setOnClickListener(this);
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void register(String account, String password){
         String registerUrl = Constant.URL_Register + "?account=" + account + "&password="+password ;
         new MyAsyncTask(textView).execute(registerUrl) ;
+
     }
 
     private void login(String account, String password){
@@ -135,9 +137,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          * @param s
          */
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(String s){
             Log.d(TAG, "onPostExecute: haha task onPostExecute()111");
             textView2.setText(s);
+            try{
+                JSONObject jsonObject = new JSONObject(s) ;
+                resCode = jsonObject.get("resCode").toString() ;
+                if("201".equals(resCode)){
+//                    Toast.makeText(MainActivity.this, "login success", Toast.LENGTH_SHORT).show();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 }
