@@ -1,5 +1,6 @@
 package cn.edu.neu.httptest3_21;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -69,13 +70,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void register(String account, String password){
         String registerUrl = Constant.URL_Register + "?account=" + account + "&password="+password ;
-        new MyAsyncTask(textView).execute(registerUrl) ;
+        new MyAsyncTask(textView, getApplicationContext()).execute(registerUrl) ;
 
     }
 
     private void login(String account, String password){
         String loginUrl = Constant.URL_Login + "?account=" + account + "&password="+password ;
-        new MyAsyncTask(textView).execute(loginUrl) ;
+        new MyAsyncTask(textView, getApplicationContext()).execute(loginUrl) ;
     }
 
     /**
@@ -84,12 +85,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * （2）后台任务执行过程中，如果需要在UI上先是当前任务进度，则使用这里指定的泛型作为进度单位
      * （3）任务执行完毕后，如果需要对结果进行返回，则这里指定返回的数据类型
      */
-    public static class MyAsyncTask extends AsyncTask<String, Integer, String> {
+    class MyAsyncTask extends AsyncTask<String, Integer, String> {
 
         private TextView textView2; // 举例一个UI元素，后边会用到
+        private Context context2 ;
 
-        public MyAsyncTask(TextView v) {
+        public MyAsyncTask(TextView v, Context context) {
             textView2 = v;
+            context2 = context ;
         }
 
         @Override
@@ -144,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 JSONObject jsonObject = new JSONObject(s) ;
                 resCode = jsonObject.get("resCode").toString() ;
                 if("201".equals(resCode)){
-//                    Toast.makeText(MainActivity.this, "login success", Toast.LENGTH_SHORT).show();
+                    SecondActivity.actionStart(MainActivity.this, jsonObject.get("userId").toString(), edit_Account.getText().toString().trim());
                 }
             }catch (Exception e){
                 e.printStackTrace();
