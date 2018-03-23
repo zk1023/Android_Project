@@ -32,15 +32,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        edit_Account = (EditText)findViewById(R.id.edit_user) ;
-        edit_Password = (EditText)findViewById(R.id.edit_pass) ;
-        textView = (TextView)findViewById(R.id.text_view) ;
-        textView.setText("Test");
-        bt_register = (Button)findViewById(R.id.button_register) ;
-        bt_register.setOnClickListener(this);
-        bt_login = (Button)findViewById(R.id.button_login) ;
-        bt_login.setOnClickListener(this);
+        setContentView(R.layout.activity_test);
+//        edit_Account = (EditText)findViewById(R.id.edit_user) ;
+//        edit_Password = (EditText)findViewById(R.id.edit_pass) ;
+//        textView = (TextView)findViewById(R.id.text_view) ;
+////        textView.setText("Test");
+//        bt_register = (Button)findViewById(R.id.button_register) ;
+//        bt_register.setOnClickListener(this);
+//        bt_login = (Button)findViewById(R.id.button_login) ;
+//        bt_login.setOnClickListener(this);
     }
     @Override
     public void onClick(View v) {
