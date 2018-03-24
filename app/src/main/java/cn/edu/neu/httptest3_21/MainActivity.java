@@ -143,7 +143,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 }else if("102".equals(resCode)){
                     Toast.makeText(MainActivity.this, "该账号未注册,请注册后使用", Toast.LENGTH_SHORT).show();
                 }else if("301".equals(resCode)){
-                    Toast.makeText(MainActivity.this, "账号密码不匹配", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){
                 e.printStackTrace();
