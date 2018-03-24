@@ -140,6 +140,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 resCode = jsonObject.get("resCode").toString() ;
                 if("201".equals(resCode)){
                     SecondActivity.actionStart(MainActivity.this, jsonObject.get("userId").toString(), edit_Account.getText().toString().trim());
+                }else if("102".equals(resCode)){
+                    Toast.makeText(MainActivity.this, "该账号未注册,请注册后使用", Toast.LENGTH_SHORT).show();
+                }else if("301".equals(resCode)){
+                    Toast.makeText(MainActivity.this, "账号密码不匹配", Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){
                 e.printStackTrace();
