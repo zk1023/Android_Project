@@ -1,0 +1,94 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/d"
+    tools:context=".MainActivity" >
+
+    <RelativeLayout
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/line1"
+        android:paddingTop="60dip"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        >
+
+        <RelativeLayout
+            android:id="@+id/a1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dip"
+            >
+            <EditText
+                android:id="@+id/rg_edit_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:background="@drawable/test2"
+                android:hint="账号"
+                android:textSize="16sp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/a2"
+            android:layout_below="@+id/a1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dip"
+            >
+            <EditText
+                android:id="@+id/rg_edit_pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:background="@drawable/test2"
+                android:hint="密码"
+                android:inputType="textPassword"
+                android:textSize="16sp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/a3"
+            android:layout_below="@+id/a2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dip"
+            >
+            <EditText
+                android:id="@+id/rg_edit_pass_sure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:background="@drawable/test2"
+                android:hint="密码确认"
+                android:inputType="textPassword"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/line4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/line2"
+        android:paddingTop="50dip"
+        android:paddingLeft="30dip"
+        android:paddingRight="30dip"
+
+        >
+        <Button
+            android:id="@+id/rg_button_register"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@drawable/test"
+            android:text="注册"
+            android:textSize="21sp"
+            android:textColor="#009966"
+            />
+    </RelativeLayout>
+
+
+</RelativeLayout>

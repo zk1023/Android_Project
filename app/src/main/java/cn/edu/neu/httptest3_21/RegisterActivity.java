@@ -1,14 +1,14 @@
 package cn.edu.neu.httptest3_21;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -21,70 +21,59 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class MainActivity extends Activity implements View.OnClickListener{
-    private static final String TAG = "MainActivity";
+public class RegisterActivity extends AppCompatActivity {
+
+    private static final String TAG = "RegisterActivity";
     private EditText edit_Account ;
     private EditText edit_Password ;
-    private TextView textView ;
+    private EditText edit_Password_sure ;
     private Button bt_register ;
-    private Button bt_login ;
     private static String resCode ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        edit_Account = (EditText)findViewById(R.id.edit_user) ;
-        edit_Password = (EditText)findViewById(R.id.edit_pass) ;
-        textView = (TextView)findViewById(R.id.text_view) ;
-        textView.setText("Test");
-        bt_register = (Button)findViewById(R.id.button_register) ;
-        bt_register.setOnClickListener(this);
-        bt_login = (Button)findViewById(R.id.button_login) ;
-        bt_login.setOnClickListener(this);
+        setContentView(R.layout.activity_register);
+        edit_Account = (EditText)findViewById(R.id.rg_edit_user) ;
+        edit_Password = (EditText)findViewById(R.id.rg_edit_pass) ;
+        edit_Password_sure = (EditText)findViewById(R.id.rg_edit_pass_sure) ;
+        bt_register = (Button)findViewById(R.id.rg_button_register) ;
+        bt_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                register();
+            }
+        });
     }
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.button_login:
-                String account_login = edit_Account.getText().toString().trim() ;
-                String password_login = edit_Password.getText().toString().trim() ;
-                if(!account_login.isEmpty()&&!password_login.isEmpty()){
-                    login(account_login, password_login);
-                }else{
-                    Toast.makeText(MainActivity.this, "账号或密码为空", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.button_register:
-                 register();
-                break ;
-            default:
-                break ;
-        }
+    public static void actionStart(Context context){
+        Intent intent = new Intent(context, RegisterActivity.class) ;
+        context.startActivity(intent) ;
     }
 
     private void register(){
-        RegisterActivity.actionStart(MainActivity.this) ;
+        String acount = "" ;
+        String password = "" ;
+        String password_sure = "" ;
+        acount = edit_Account.getText().toString().trim() ;
+        password = edit_Password.getText().toString().trim() ;
+        password_sure = edit_Password_sure.getText().toString().trim() ;
+        if(acount.isEmpty() || acount.length() == 0 || password.isEmpty() || password_sure.isEmpty()){
+            Log.d(TAG, "register: haha 账号为空");
+            Toast.makeText(RegisterActivity.this, "账号或密码为空，请重新输入", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!password.equals(password_sure)){
+            Log.d(TAG, "register: haha 两次密码输入不一致");
+            Toast.makeText(RegisterActivity.this, "两次密码输入不一致，请重新输入", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String registerUrl = Constant.URL_Register + "?account=" + acount + "&password=" + password ;
+        new RegisterAsyncTask().execute(registerUrl) ;
     }
 
-    private void login(String account, String password){
-        String loginUrl = Constant.URL_Login + "?account=" + account + "&password="+password ;
-        new MyAsyncTask(textView, getApplicationContext()).execute(loginUrl) ;
-    }
+    class RegisterAsyncTask extends AsyncTask<String, Integer, String> {
 
-    /**
-     * AsyncTask类的三个泛型参数：
-     * （1）Param 在执行AsyncTask是需要传入的参数，可用于后台任务中使用
-     * （2）后台任务执行过程中，如果需要在UI上先是当前任务进度，则使用这里指定的泛型作为进度单位
-     * （3）任务执行完毕后，如果需要对结果进行返回，则这里指定返回的数据类型
-     */
-    class MyAsyncTask extends AsyncTask<String, Integer, String> {
+        public RegisterAsyncTask() {
 
-        private TextView textView2; // 举例一个UI元素，后边会用到
-        private Context context2 ;
-
-        public MyAsyncTask(TextView v, Context context) {
-            textView2 = v;
-            context2 = context ;
         }
 
         @Override
@@ -134,12 +123,16 @@ public class MainActivity extends Activity implements View.OnClickListener{
         @Override
         protected void onPostExecute(String s){
             Log.d(TAG, "onPostExecute: haha task onPostExecute()111");
-            textView2.setText(s);
             try{
                 JSONObject jsonObject = new JSONObject(s) ;
                 resCode = jsonObject.get("resCode").toString() ;
-                if("201".equals(resCode)){
-                    SecondActivity.actionStart(MainActivity.this, jsonObject.get("userId").toString(), edit_Account.getText().toString().trim());
+                if("200".equals(resCode)){
+                    Toast.makeText(RegisterActivity.this, "注册成功，请登录", Toast.LENGTH_SHORT).show();
+                    finish();
+                }else if("100".equals(resCode)){
+                    Toast.makeText(RegisterActivity.this, "该账号已注册，请使用其他账号", Toast.LENGTH_SHORT).show();
+                }else if("300".equals(resCode)){
+                    Toast.makeText(RegisterActivity.this, "有人在数据库上搞事情，注册失败了", Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){
                 e.printStackTrace();
